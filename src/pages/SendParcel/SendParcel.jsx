@@ -3,10 +3,16 @@ import { useForm, useWatch } from 'react-hook-form';
 import { useLoaderData } from 'react-router';
 import Swal from 'sweetalert2';
 import { ErrorMsg } from './ErrorMsg';
+import useAxiosSecure from '../../hooks/useAxiosSecure';
+import useAuth from '../../hooks/useAuth';
 
 const SendParcel = () => {
 
-    const { register, handleSubmit, control, formState: { errors } } = useForm();
+    const { register, handleSubmit, control, reset, formState: { errors } } = useForm();
+    const {user} = useAuth();
+
+    const axiosSecure = useAxiosSecure();
+
     const serviceCenters = useLoaderData();
     const regionsDuplicate = serviceCenters.map(c => c.region);
     const regions = [...new Set(regionsDuplicate)];
@@ -54,11 +60,20 @@ const SendParcel = () => {
             confirmButtonText: "All Right!"
         }).then((result) => {
             if (result.isConfirmed) {
+
+                // save the parcel info to the database
+                axiosSecure.post("/parcels", data)
+                .then(res => {
+                    console.log(res.data);
+                })
+
                 Swal.fire({
                     title: "Confirmed!",
                     text: "Your order has been placed!",
                     icon: "success"
                 });
+
+                reset();
             }
         });
     }
@@ -106,12 +121,14 @@ const SendParcel = () => {
                         <h4 className="text-xl font-semibold">Sender Details</h4>
                         <fieldset className="fieldset">
                             <label className="label mt-4">Sender Name</label>
-                            <input type="text" {...register("senderName", {required: true})} className="input w-full" placeholder="Sender Name" />
+                            <input type="text" {...register("senderName", {required: true})} className="input w-full" defaultValue={user?.displayName} placeholder="Sender Name" />
                             <ErrorMsg error={errors.senderName} />
 
-                            <label className="label mt-3">Sender Address</label>
-                            <input type="text" {...register("senderAddress", {required: true})} className="input w-full" placeholder="sender Address" />
-                            <ErrorMsg error={errors.senderAddress} />
+                            <label className="label mt-3">Sender Email Address</label>
+                            <input type="email" {...register("senderEmail", {required: true})} className="input w-full" 
+                            defaultValue={user?.email}
+                            placeholder="Sender Email Address" />
+                            <ErrorMsg error={errors.senderEmail} />
 
                             <label className="label mt-3">Sender Phone No</label>
                             <input type="number" {...register("senderPhoneNo", {required: true})} className="input w-full" placeholder="Sender Phone No" />
@@ -154,9 +171,9 @@ const SendParcel = () => {
                             <input type="text" {...register("receiverName", {required: true})} className="input w-full" placeholder="Receiver Name" />
                             <ErrorMsg error={errors.receiverName} />
 
-                            <label className="label mt-3">Receiver Address</label>
-                            <input type="text" {...register("receiverAddress", {required: true})} className="input w-full" placeholder="Receiver Address" />
-                            <ErrorMsg error={errors.receiverAddress} />
+                            <label className="label mt-3">Receiver Email Address</label>
+                            <input type="email" {...register("receiverEmail", {required: true})} className="input w-full" placeholder="Receiver Email Address" />
+                            <ErrorMsg error={errors.receiverEmail} />
 
                             <label className="label mt-3">Receiver Phone No</label>
                             <input type="number" {...register("receiverPhoneNo", {required: true})} className="input w-full" placeholder="Receiver Phone No" />
