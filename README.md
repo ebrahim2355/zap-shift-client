@@ -78,25 +78,19 @@ npm install
 
 npm run dev
 
----
-
-## 🖥️ Backend Setup
+### 🖥️ Backend Setup
 
 Visit the server repository for setup instructions:
 
 👉 https://github.com/ebrahim2355/zap-shift-server
 
----
 
-## 🤝 Contributing
+### 🤝 Contributing
 
 Pull requests are welcome!
 For major changes, please open an issue first.
 
----
 
-## .
-
-📄 License
+### 📄 License
 
 MIT License © 2025 MD. Ebrahim Ali
