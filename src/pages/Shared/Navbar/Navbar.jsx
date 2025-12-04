@@ -5,25 +5,30 @@ import useAuth from '../../../hooks/useAuth';
 
 const Navbar = () => {
 
-    const {user, logOut} = useAuth();
+    const { user, logOut } = useAuth();
 
     const handleLogOut = () => {
         logOut().then()
-        .catch(err => {
-            console.log(err);
-        })
+            .catch(err => {
+                console.log(err);
+            })
     }
 
     const links = <>
+        {
+            user && <>
+                <li><NavLink to={"/dashboard"}>Dashboard</NavLink></li>
+            </>
+        }
         <li><NavLink to>Services</NavLink></li>
-        <li><NavLink>About Us</NavLink></li>
-        <li><NavLink to={"/send-parcel"}>Send Parcel</NavLink></li>
-        <li><NavLink to={"/coverage"}>Coverage</NavLink></li>
+        <li><NavLink to={"/send-parcel"}>Send a Parcel</NavLink></li>
+        <li><NavLink to={"/coverage"}>Coverage Areas</NavLink></li>
         {
             user && <>
                 <li><NavLink to={"/dashboard/my-parcels"}>My Parcels</NavLink></li>
             </>
         }
+        <li><NavLink>About Us</NavLink></li>
     </>
 
     return (
@@ -36,10 +41,10 @@ const Navbar = () => {
                     <ul
                         tabIndex="-1"
                         className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
-                            {links}
+                        {links}
                     </ul>
                 </div>
-                <a className=" btn-ghost text-xl"><Logo></Logo></a>
+                <span className=" btn-ghost text-xl"><Logo></Logo></span>
             </div>
             <div className="navbar-center hidden lg:flex">
                 <ul className="menu menu-horizontal px-1">
@@ -49,11 +54,11 @@ const Navbar = () => {
             <div className="navbar-end gap-3">
                 {
                     user ?
-                    <a onClick={handleLogOut} className="btn bg-primary">Log Out</a>
-                    :
-                    <Link to={"/login"} className="btn bg-primary">Login</Link>
+                        <a onClick={handleLogOut} className="btn btn-primary text-black">Log Out</a>
+                        :
+                        <Link to={"/login"} className="btn btn-primary text-black">Login</Link>
                 }
-                <Link to={"/rider"} className="btn bg-primary">Be a Rider</Link>
+                <Link to={"/rider"} className="btn btn-primary text-black">Be a Rider</Link>
             </div>
         </div>
     );

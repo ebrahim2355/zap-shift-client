@@ -1,8 +1,16 @@
 import React from 'react';
+import { FaTasks, FaUsers } from 'react-icons/fa';
 import { GoPackage } from 'react-icons/go';
+import { IoIosCard } from 'react-icons/io';
+import { RiEBike2Fill } from 'react-icons/ri';
 import { Link, NavLink, Outlet } from 'react-router';
+import useRole from '../hooks/useRole';
+import { MdAssignmentInd } from 'react-icons/md';
+import { SiGoogletasks } from 'react-icons/si';
+import logoImg from "../assets/logo.png"
 
 const DashboardLayout = () => {
+    const { role } = useRole();
     return (
         <div className="drawer lg:drawer-open max-w-7xl mx-auto">
             <input id="my-drawer-4" type="checkbox" className="drawer-toggle" />
@@ -26,9 +34,15 @@ const DashboardLayout = () => {
                     <ul className="menu w-full grow">
                         {/* List item */}
                         <li>
-                            <Link to={"/"} className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Homepage">
+                            <NavLink className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="ZapShift Home" to={"/"}>
+                                <img className='size-8 is-drawer-close:size-5' src={logoImg} alt="" />
+                                <h3 className='text-3xl font-bold is-drawer-close:hidden'>ZapShift</h3>
+                            </NavLink>
+                        </li>
+                        <li>
+                            <Link to={"/dashboard"} className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Homepage">
                                 {/* Home icon */}
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" strokeLinejoin="round" strokeLinecap="round" strokeWidth="2" fill="none" stroke="currentColor" className="my-1.5 inline-block size-4"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"></path><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" strokeLinejoin="round" strokeLinecap="round" strokeWidth="2" fill="none" stroke="currentColor" className=" inline-block size-5"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"></path><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
                                 <span className="is-drawer-close:hidden">Homepage</span>
                             </Link>
                         </li>
@@ -36,8 +50,60 @@ const DashboardLayout = () => {
                         {/* our dashboard links */}
                         <li>
                             <NavLink className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="My Parcels" to={"/dashboard/my-parcels"}>
-                                <GoPackage />
+                                <GoPackage className='size-5' />
                                 <span className="is-drawer-close:hidden">My Parcels</span>
+                            </NavLink>
+                        </li>
+
+                        {/* rider only routes */}
+                        {
+                            role === "rider" && <>
+                                <li>
+                                    <NavLink className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Assigned Deliveries" to={"/dashboard/assigned-deliveries"}>
+                                        <FaTasks className='size-5' />
+                                        <span className="is-drawer-close:hidden">Assigned Deliveries</span>
+                                    </NavLink>
+                                </li>
+
+                                <li>
+                                    <NavLink className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Completed Deliveries" to={"/dashboard/completed-deliveries"}>
+                                        <SiGoogletasks className='size-5' />
+                                        <span className="is-drawer-close:hidden">Completed Deliveries</span>
+                                    </NavLink>
+                                </li>
+                            </>
+                        }
+
+                        {/* admin only routes */}
+                        {
+                            role === "admin" && <>
+                                <li>
+                                    <NavLink className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Approve Riders" to={"/dashboard/approve-riders"}>
+                                        <RiEBike2Fill className='size-5' />
+                                        <span className="is-drawer-close:hidden">Approve Riders</span>
+                                    </NavLink>
+                                </li>
+
+                                <li>
+                                    <NavLink className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Assign Riders" to={"/dashboard/assign-riders"}>
+                                        <MdAssignmentInd className='size-5' />
+                                        <span className="is-drawer-close:hidden">Assign Riders</span>
+                                    </NavLink>
+                                </li>
+
+                                <li>
+                                    <NavLink className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="users Management" to={"/dashboard/users-management"}>
+                                        <FaUsers className='size-5' />
+                                        <span className="is-drawer-close:hidden">Users Management</span>
+                                    </NavLink>
+                                </li>
+                            </>
+                        }
+
+                        <li>
+                            <NavLink className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Payment History" to={"/dashboard/payment-history"}>
+                                <IoIosCard className='size-5' />
+                                <span className="is-drawer-close:hidden">Payment History</span>
                             </NavLink>
                         </li>
 
@@ -45,7 +111,7 @@ const DashboardLayout = () => {
                         <li>
                             <button className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Settings">
                                 {/* Settings icon */}
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" strokeLinejoin="round" strokeLinecap="round" strokeWidth="2" fill="none" stroke="currentColor" className="my-1.5 inline-block size-4"><path d="M20 7h-9"></path><path d="M14 17H5"></path><circle cx="17" cy="17" r="3"></circle><circle cx="7" cy="7" r="3"></circle></svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" strokeLinejoin="round" strokeLinecap="round" strokeWidth="2" fill="none" stroke="currentColor" className=" inline-block size-5"><path d="M20 7h-9"></path><path d="M14 17H5"></path><circle cx="17" cy="17" r="3"></circle><circle cx="7" cy="7" r="3"></circle></svg>
                                 <span className="is-drawer-close:hidden">Settings</span>
                             </button>
                         </li>

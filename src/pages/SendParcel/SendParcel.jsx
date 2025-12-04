@@ -1,17 +1,18 @@
 import React from 'react';
 import { useForm, useWatch } from 'react-hook-form';
-import { useLoaderData } from 'react-router';
+import { useLoaderData, useNavigate } from 'react-router';
 import Swal from 'sweetalert2';
-import { ErrorMsg } from './ErrorMsg';
+import { ErrorMsg } from '../../components/ErrorMsg/ErrorMsg';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
 import useAuth from '../../hooks/useAuth';
 
 const SendParcel = () => {
 
     const { register, handleSubmit, control, reset, formState: { errors } } = useForm();
-    const {user} = useAuth();
+    const { user } = useAuth();
 
     const axiosSecure = useAxiosSecure();
+    const navigate = useNavigate();
 
     const serviceCenters = useLoaderData();
     const regionsDuplicate = serviceCenters.map(c => c.region);
@@ -48,7 +49,8 @@ const SendParcel = () => {
                 cost = minCharge + extraCharge;
             }
         }
-        console.log(cost)
+        console.log(cost);
+        data.cost = cost;
 
         Swal.fire({
             title: "Please confirm the cost.",
@@ -63,17 +65,19 @@ const SendParcel = () => {
 
                 // save the parcel info to the database
                 axiosSecure.post("/parcels", data)
-                .then(res => {
-                    console.log(res.data);
-                })
+                    .then(res => {
+                        console.log(res.data);
+                        if (res.data.insertedId) {
+                            navigate("/dashboard/my-parcels")
+                            Swal.fire({
+                                title: "Confirmed!",
+                                text: "Your order has been placed!",
+                                icon: "success"
+                            });
 
-                Swal.fire({
-                    title: "Confirmed!",
-                    text: "Your order has been placed!",
-                    icon: "success"
-                });
-
-                reset();
+                            reset();
+                        }
+                    })
             }
         });
     }
@@ -102,12 +106,12 @@ const SendParcel = () => {
                 <div className='grid grid-cols-1 md:grid-cols-2 my-8 gap-4 md:gap-8'>
                     <fieldset className="fieldset">
                         <label className="label">Parcel Name</label>
-                        <input type="text" {...register("parcelName", {required: true})} className="input w-full" placeholder="Parcel Name" />
+                        <input type="text" {...register("parcelName", { required: true })} className="input w-full" placeholder="Parcel Name" />
                         <ErrorMsg error={errors.parcelName} />
                     </fieldset>
                     <fieldset className="fieldset">
                         <label className="label">Parcel Weight(KG)</label>
-                        <input type="number" {...register("parcelWeight", {required: true})} className="input w-full" placeholder="Parcel Weight" />
+                        <input type="number" {...register("parcelWeight", { required: true })} className="input w-full" placeholder="Parcel Weight" />
                         <ErrorMsg error={errors.parcelWeight} />
                     </fieldset>
                 </div>
@@ -121,22 +125,22 @@ const SendParcel = () => {
                         <h4 className="text-xl font-semibold">Sender Details</h4>
                         <fieldset className="fieldset">
                             <label className="label mt-4">Sender Name</label>
-                            <input type="text" {...register("senderName", {required: true})} className="input w-full" defaultValue={user?.displayName} placeholder="Sender Name" />
+                            <input type="text" {...register("senderName", { required: true })} className="input w-full" defaultValue={user?.displayName} placeholder="Sender Name" />
                             <ErrorMsg error={errors.senderName} />
 
                             <label className="label mt-3">Sender Email Address</label>
-                            <input type="email" {...register("senderEmail", {required: true})} className="input w-full" 
-                            defaultValue={user?.email}
-                            placeholder="Sender Email Address" />
+                            <input type="email" {...register("senderEmail", { required: true })} className="input w-full"
+                                defaultValue={user?.email}
+                                placeholder="Sender Email Address" />
                             <ErrorMsg error={errors.senderEmail} />
 
                             <label className="label mt-3">Sender Phone No</label>
-                            <input type="number" {...register("senderPhoneNo", {required: true})} className="input w-full" placeholder="Sender Phone No" />
+                            <input type="number" {...register("senderPhoneNo", { required: true })} className="input w-full" placeholder="Sender Phone No" />
                             <ErrorMsg error={errors.senderPhoneNo} />
 
                             <fieldset className="fieldset">
                                 <legend className="label pt-3">Sender Region</legend>
-                                <select {...register("senderRegion", {required: true})} defaultValue="" className="select w-full">
+                                <select {...register("senderRegion", { required: true })} defaultValue="" className="select w-full">
                                     <option value={""} disabled={true}>Pick a Region</option>
                                     {
                                         regions.map((r, i) => <option key={i} value={r}>{r}</option>)
@@ -146,7 +150,7 @@ const SendParcel = () => {
                             </fieldset>
 
                             <label className="label mt-3">Sender District</label>
-                            <select {...register("senderDistrict", {required: true})} defaultValue="" className="select w-full">
+                            <select {...register("senderDistrict", { required: true })} defaultValue="" className="select w-full">
                                 <option value={""} disabled={true}>Pick a District</option>
                                 {
                                     districtsByRegion(senderRegion).map((r, i) => <option key={i} value={r}>{r}</option>)
@@ -168,20 +172,20 @@ const SendParcel = () => {
                         <h4 className="text-xl font-semibold">Receiver Details</h4>
                         <fieldset className="fieldset">
                             <label className="label mt-4">Receiver Name</label>
-                            <input type="text" {...register("receiverName", {required: true})} className="input w-full" placeholder="Receiver Name" />
+                            <input type="text" {...register("receiverName", { required: true })} className="input w-full" placeholder="Receiver Name" />
                             <ErrorMsg error={errors.receiverName} />
 
                             <label className="label mt-3">Receiver Email Address</label>
-                            <input type="email" {...register("receiverEmail", {required: true})} className="input w-full" placeholder="Receiver Email Address" />
+                            <input type="email" {...register("receiverEmail", { required: true })} className="input w-full" placeholder="Receiver Email Address" />
                             <ErrorMsg error={errors.receiverEmail} />
 
                             <label className="label mt-3">Receiver Phone No</label>
-                            <input type="number" {...register("receiverPhoneNo", {required: true})} className="input w-full" placeholder="Receiver Phone No" />
+                            <input type="number" {...register("receiverPhoneNo", { required: true })} className="input w-full" placeholder="Receiver Phone No" />
                             <ErrorMsg error={errors.receiverPhoneNo} />
 
                             <fieldset className="fieldset">
                                 <legend className="label pt-3">Receiver Region</legend>
-                                <select {...register("receiverRegion", {required: true})} defaultValue="" className="select w-full">
+                                <select {...register("receiverRegion", { required: true })} defaultValue="" className="select w-full">
                                     <option value={""} disabled={true}>Pick a Region</option>
                                     {
                                         regions.map((r, i) => <option key={i} value={r}>{r}</option>)
@@ -191,7 +195,7 @@ const SendParcel = () => {
                             </fieldset>
 
                             <label className="label mt-3">Receiver District</label>
-                            <select {...register("receiverDistrict", {required: true})} defaultValue="" className="select w-full">
+                            <select {...register("receiverDistrict", { required: true })} defaultValue="" className="select w-full">
                                 <option value={""} disabled={true}>Pick a District</option>
                                 {
                                     districtsByRegion(receiverRegion).map((d, i) => <option key={i} value={d}>{d}</option>)

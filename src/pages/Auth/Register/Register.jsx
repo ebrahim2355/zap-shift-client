@@ -12,27 +12,36 @@ const Register = () => {
     const location = useLocation();
     const navigate = useNavigate();
 
-    const handleRegister = (data) => {
-        console.log(data);
+    const handleRegister = async (data) => {
         const profileImg = data.photo[0];
 
-        registerUser(data.email, data.password)
-            .then(res => {
-                console.log(res.user);
+        await registerUser(data.email, data.password)
+            .then(async () => {
                 // store the image and get the photo url
                 const formData = new FormData();
                 formData.append("image", profileImg);
 
                 const image_API_URL = `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_image_host_key}`
 
-                axios.post(image_API_URL, formData)
-                    .then(res => {
-                        console.log("after image upload", res.data.data.url)
+                await axios.post(image_API_URL, formData)
+                    .then(async res => {
+                        const photoURL = res.data.data.url;
+
+                        // create user in he DB
+                        const userInfo = {
+                            email: data.email,
+                            displayName: data.name,
+                            photoURL: photoURL
+                        }
+                        await axios.post("https://zap-shift-server-puce-ten.vercel.app/users", userInfo)
+                        .then(res => {
+                            if(res.data.insertedId){console.log("user created")}
+                        })
 
                         // update the user profile
                         const userProfile = {
                             displayName: data.name,
-                            photoURL: res.data.data.url
+                            photoURL: photoURL
                         }
 
                         updateUserProfile(userProfile)
