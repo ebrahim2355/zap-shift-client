@@ -1,16 +1,102 @@
-# React + Vite
+# 🚀 Zap Shift – Parcel Delivery Management System
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Zap Shift is a modern, fast, and secure parcel delivery management platform built with **React**, **React Router 7**, **Firebase Authentication**, **TailwindCSS**, and **Express.js** (Node.js backend).  
+Users can send parcels, track deliveries, view payment history, and manage delivery operations from a clean dashboard.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🌐 Live Demo
 
-## React Compiler
+🔗 **Client Live Link:** https://zap-shift-55cef.web.app/  
+🔗 **Server Repository:** https://github.com/ebrahim2355/zap-shift-server
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## ✨ Features
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### 👤 **User**
+- Register & Login with Firebase Auth
+- Send Parcels with full parcel data
+- Track parcel status in real-time
+- View payment history
+- Make payments securely
+
+### 🛵 **Rider**
+- View assigned deliveries
+- Mark parcels as picked/arriving/delivered
+- Delivery dashboard
+
+### 🛠️ **Admin**
+- Manage riders  
+- Approve riders  
+- View all parcels  
+- Manage users  
+- Assign riders to parcels  
+
+### 🌍 **General**
+- Interactive map using **Leaflet + React Leaflet**
+- Fully responsive UI
+- Protected routes using React Router v7
+- Global state with TanStack Query
+- Clean UI with TailwindCSS v4
+
+---
+
+## 🛠️ Tech Stack
+
+### **Frontend**
+- React 19
+- React Router 7
+- TailwindCSS 4 + Tailwind Vite Plugin
+- React Hook Form
+- Axios
+- TanStack Query
+- SweetAlert2
+- React Icons
+- Recharts (analytics)
+- Leaflet + React Leaflet
+- Swiper (sliders)
+- Firebase Authentication
+
+### **Backend**
+- Node.js + Express.js
+- MongoDB
+- JWT Authentication
+- Stripe Payment Integration (if used)
+
+---
+
+## 📦 Installation & Setup
+
+### 1️⃣ Clone the client
+
+```sh
+git clone https://github.com/ebrahim2355/zap-shift-client.git
+cd zap-shift-client
+
+npm install
+
+npm run dev
+
+---
+
+## 🖥️ Backend Setup
+
+Visit the server repository for setup instructions:
+
+👉 https://github.com/ebrahim2355/zap-shift-server
+
+---
+
+## 🤝 Contributing
+
+Pull requests are welcome!
+For major changes, please open an issue first.
+
+---
+
+## .
+
+📄 License
+
+MIT License © 2025 MD. Ebrahim Ali
