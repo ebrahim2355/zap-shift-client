@@ -73,10 +73,29 @@ Users can send parcels, track deliveries, view payment history, and manage deliv
 ```sh
 git clone https://github.com/ebrahim2355/zap-shift-client.git
 cd zap-shift-client
+```
 
+## 2️⃣ Install dependencies
+
+```sh
 npm install
+```
 
+## 3️⃣ Create .env file
+
+```sh
+VITE_apiKey=YOUR_FIREBASE_KEY
+VITE_authDomain=...
+VITE_projectId=...
+VITE_image_host_key=YOUR_IMGBB_KEY
+VITE_server_url=http://localhost:3000
+```
+
+## 4️⃣ Run the client
+```sh
 npm run dev
+```
+---
 
 ### 🖥️ Backend Setup
 
